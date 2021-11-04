@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   conversion.c                                       :+:      :+:    :+:   */
+/*   conversions1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lucas-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:27:23 by lucas-ma          #+#    #+#             */
-/*   Updated: 2021/11/03 12:16:28 by lucas-ma         ###   ########.fr       */
+/*   Updated: 2021/11/04 22:44:24 by lucasSilv        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	ft_putstr_fd(char *str, int fd)
 {
 	int	index;
 
+	if (!str)
+		return (write(fd, "(null)", 6));
 	index = 0;
 	while (str[index])
 		index += ft_putchar_fd(str[index], fd);
@@ -34,35 +36,17 @@ int	ft_putaddr_fd(unsigned int addr, int fd)
 	return (write(fd, "0x", 2) + ft_printhexa(addr, fd));
 }
 
-int	ft_putunbr_fd(int nb, int fd)
+int	ft_putunbr_base(size_t nb, int len_base, char *base, int fd)
 {
-	int	count;
+	static int	count;
 
 	count = 0;
-	if (nb <= 9)
-		count += ft_putchar_fd((nb + '0'), fd);
+	if (nb < len_base)
+		count += write(1, base + num, 1);
 	else
 	{
-		ft_putunbr_fd((nb / 10), fd);
-		ft_putchar_fd((nb % 10 + '0'), fd);
+		ft_putnbr_base(nb / len_base, len_base, base, fd);
+		nb = nb % len_base;
+		count += write(1, base + nb, 1);
 	}
-	return (count);
-}
-
-int	ft_putnbr_fd(int nb, int fd)
-{
-	int	count;
-
-	count = 0;
-	if (nb == -2147483648)
-		count += write(fd, "-2147483648", 11);
-	else
-	{
-		if (nb < 0)
-		{
-			count += ft_putchar_fd('-', fd);
-			nb = -nb;
-		}
-	}
-	return (count + ft_putunbr_fd(nb, fd));
 }
