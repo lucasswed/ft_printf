@@ -6,7 +6,7 @@
 /*   By: lucas-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 15:27:23 by lucas-ma          #+#    #+#             */
-/*   Updated: 2021/11/03 12:16:28 by lucas-ma         ###   ########.fr       */
+/*   Updated: 2021/11/05 14:43:41 by lucas-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,48 +21,32 @@ int	ft_putstr_fd(char *str, int fd)
 {
 	int	index;
 
+	if (!str)
+		return (write(fd, "(null)", 6));
 	index = 0;
 	while (str[index])
 		index += ft_putchar_fd(str[index], fd);
 	return (index);
 }
 
-int	ft_putaddr_fd(unsigned int addr, int fd)
+int	ft_putaddr_fd(unsigned long addr, int fd)
 {
 	if (!addr)
 		return (write(fd, "0x0", 3));
-	return (write(fd, "0x", 2) + ft_printhexa(addr, fd));
+	return (write(fd, "0x", 2) + ft_putunbr_base(addr, 16, fd, 1));
 }
 
-int	ft_putunbr_fd(int nb, int fd)
+int	ft_putnbr_base(ssize_t nb, size_t len_base, int fd, int type)
 {
-	int	count;
-
-	count = 0;
-	if (nb <= 9)
-		count += ft_putchar_fd((nb + '0'), fd);
-	else
-	{
-		ft_putunbr_fd((nb / 10), fd);
-		ft_putchar_fd((nb % 10 + '0'), fd);
-	}
-	return (count);
-}
-
-int	ft_putnbr_fd(int nb, int fd)
-{
-	int	count;
+	int		count;
 
 	count = 0;
 	if (nb == -2147483648)
-		count += write(fd, "-2147483648", 11);
-	else
+		return (write(fd, "-2147483648", 11));
+	if (nb < 0)
 	{
-		if (nb < 0)
-		{
-			count += ft_putchar_fd('-', fd);
-			nb = -nb;
-		}
+		count += ft_putchar_fd('-', 1);
+		nb = -nb;
 	}
-	return (count + ft_putunbr_fd(nb, fd));
+	return (count + ft_putunbr_base(nb, len_base, fd, type));
 }

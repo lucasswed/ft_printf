@@ -6,40 +6,34 @@
 /*   By: lucas-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 11:09:57 by lucas-ma          #+#    #+#             */
-/*   Updated: 2021/11/03 12:20:44 by lucas-ma         ###   ########.fr       */
+/*   Updated: 2021/11/05 14:33:20 by lucas-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printhexa(unsigned int nb, int fd)
+int	ft_putunbr_base(size_t nb, size_t len_base, int fd, int type)
 {
-	int	count;
+	static int	count;
+	char		base[17];
 
 	count = 0;
-	if (nb < 16)
-		count += write(1, &"0123456789abcdef"[nb], 1);
-	else
+	if (len_base == 16)
 	{
-		ft_printhexa(nb / 16, fd);
-		nb = nb % 16;
-		count += write(1, &"0123456789abcdef"[nb], 1);
+		if (type == 1)
+			ft_strcpy(base, "0123456789abcdef", 16);
+		else
+			ft_strcpy(base, "0123456789ABCDEF", 16);
 	}
-	return (count);
-}
-
-int	ft_printhexam(unsigned int nb, int fd)
-{
-	int	count;
-
-	count = 0;
-	if (nb < 16)
-		count += write(1, &"0123456789abcdef"[nb] + nb, 1);
+	else
+		ft_strcpy(base, "0123456789", 10);
+	if (nb < len_base)
+		count += ft_putchar_fd(base[nb], 1);
 	else
 	{
-		ft_printhexam(nb / 16, fd);
-		nb = nb % 16;
-		count += write(1, &"0123456789ABCEF"[nb], 1);
+		ft_putunbr_base(nb / len_base, len_base, fd, 1);
+		nb = nb % len_base;
+		ft_putchar_fd(base[nb], 1);
 	}
 	return (count);
 }
@@ -56,4 +50,13 @@ int	ft_isconv(char c, char *str)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_strcpy(char *dst, const char *src, size_t n)
+{
+	if (dst && src)
+	{
+		while (n--)
+			*dst++ = *src++;
+	}
 }

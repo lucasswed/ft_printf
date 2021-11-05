@@ -6,7 +6,7 @@
 #    By: lucas-ma <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 11:11:06 by lucas-ma          #+#    #+#              #
-#    Updated: 2021/11/03 12:01:13 by lucas-ma         ###   ########.fr        #
+#    Updated: 2021/11/03 12:37:11 by lucas-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIB1	= ar -rcs
 LIB2	= ranlib
 RM		= /bin/rm -f
 
-NAME	= ft_printf.a
+NAME	= libftprintf.a
 
 INCLUDE	= ft_printf.h
 SRCS	= ft_printf.c	conversions1.c	conversions2.c
