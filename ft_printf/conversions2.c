@@ -6,7 +6,7 @@
 /*   By: lucas-ma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 11:09:57 by lucas-ma          #+#    #+#             */
-/*   Updated: 2021/11/05 14:33:20 by lucas-ma         ###   ########.fr       */
+/*   Updated: 2021/11/09 10:58:37 by lucas-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	ft_putunbr_base(size_t nb, size_t len_base, int fd, int type)
 		count += ft_putchar_fd(base[nb], 1);
 	else
 	{
-		ft_putunbr_base(nb / len_base, len_base, fd, 1);
+		ft_putunbr_base(nb / len_base, len_base, fd, type);
 		nb = nb % len_base;
-		ft_putchar_fd(base[nb], 1);
+		count += ft_putchar_fd(base[nb], 1);
 	}
 	return (count);
 }
